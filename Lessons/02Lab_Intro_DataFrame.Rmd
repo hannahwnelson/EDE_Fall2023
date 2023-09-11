@@ -22,6 +22,7 @@ Let's look into a built-in data frame from package "datasets" - cars. The data g
 
 ```{r cars}
 cars
+mtcars
 ```
 
 Note that it has 2 columns and 50 rows.
@@ -32,6 +33,7 @@ Suppose you want just the column speed. How would you access that data?
 
 ```{r}
 cars$speed
+mtcars$cyl
 ```
 
 How would you store it on another object?
@@ -51,6 +53,7 @@ class(car_speed)
 
 #Option 2
 is.data.frame(car_speed)
+is.vector(car_speed)
 ```
 
 How could you make it a data frame?
@@ -66,6 +69,8 @@ class(df_car_speed)
 How could you add columns to *df_car_speed*?
 
 ```{r}
+#cbind can make multiple vetors a data frame, or multiple data frames into a larger data frame
+
 car_dist <- cars$dist
 
 #Option 1
@@ -94,6 +99,7 @@ How would you create a data frame?
 
 ```{r}
 #useful function data.frame()
+#creating data frame from two vectors, giving names to each vector
 create_df <- data.frame("speed"=car_speed,"dist"=car_dist)
 create_df
 ```
@@ -103,14 +109,23 @@ create_df
 Some useful functions to use with data frames.
 
 ```{r}
-ncol(df)  
-nrow(df)  
+ncol(df)  #number of columns
+nrow(df)  #number of rows
 length(df)  #same as ncol
-summary(df)
+summary(df) #quick summary stats
 head(df) #show the first 6 rows of df
+head(df,2) #customize how many rows are shown
 
 #If you know the number of the column you want you can refer to that to access column
+
+df2 <- as.data.frame(df$car_speed) [c(2,3,1),]
+df2
+
 df[,1]
+df[1:10,2] #gives the first through tenth values of column two
+df[1:10,] #gives the first through tenth values of all columns
+df[c(2,3,1),1] #gives values 2,3,1 of column one (customized order)
+df[c(2,3,1),] #gives value 2,3,1 of all columns (customized order)
 
 #you could also use this notation to delete columns
 df <- df[,-2]
