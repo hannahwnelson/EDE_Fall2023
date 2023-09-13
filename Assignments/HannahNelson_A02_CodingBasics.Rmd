@@ -46,18 +46,32 @@ median
 #the median is 14.5
 
 #3. 
-#using an if/ if else function to generate text indicating if the mean is greater, less than, or equal to the median based on which statement is mathematically correct
-#this tells me that the mean and median are equal
+#creating a function that will indicate if the mean is larger than the median by generating true/false
+measures <- function(sequence) {
+  measures <- ifelse(mean > median, "TRUE", "FALSE")
+  print(measures)
+}
 
-if (mean > median) {
-  cat("The mean is greater")
-} else if (mean < median) {
-  cat("The mean is less")
-} else if (mean==median) {
-  cat("They are equal")
+#creating an if else function to generate text indicating if the mean is greater, less than, or equal to the median 
+#this is useful because I know the mean and median are the same value, but that could not be reflected using the true/false function above
+measures2 <- function(sequence) {
+  measures2 <- if (mean > median) {
+    print("The mean is greater than the median")
+  }
+  else if (mean < median) {
+  print("The mean is less than the median")
+  }
+  else {
+  print("The mean and median are equal")
+  }
 }
 
 
+#run sequence through functions to generate results
+#this function tells us that the mean is not larger than the median
+measures(sequence)
+#this function tells us the mean is equal to the median
+measures2(sequence)
 ```
 
 ## Basics, Part 2
@@ -72,15 +86,15 @@ if (mean > median) {
 
 ```{r basics 2}
 #5. & #6.
-#names vector
+#creating vector with four names called "names"
 names <- c("Bella", "Emily", "Alex", "Rachel")
-#scores vector
+#creating vector with four scores called "scores"
 scores <- c(80, 90, 70, 40)
-#true/false passing score vector
+#creating vector with true/false values indicating if a passing score was achieved corresponding to the values in the scores vector called "pass"
 pass <- c("TRUE", "TRUE", "TRUE", "FALSE")
 
 #7. & #8.
-#creating data frame by combining the three vectors and naming the columns
+#creating data frame called "testing" by combining the three vectors and naming the columns
 testing <- data.frame("names"=names, "scores"=scores, "passing_score"=pass)
 testing
 ```
@@ -94,16 +108,15 @@ testing
 11. Apply your function to the vector with test scores that you created in number 5.
 
 ```{r basics 3}
-#scores vetor
+#scores vetor from question 5:
 scores <- c(80, 90, 70, 40)
 
 #10.
-#function that prints "true" if score if 50 or higher, and "false" if it is lower than 50
+#function that prints "true" if score is 50 or higher or "false" if it is lower than 50
 passfail <- function(scores) {
   passfail <- ifelse(scores >= 50, "TRUE", "FALSE")
   print(passfail)
 }
-
 
 #11.
 #run function on vector to produce true/false list indicating if each score in the vector was passing
