@@ -114,8 +114,8 @@ scores <- c(80, 90, 70, 40)
 #10.
 #function that prints "true" if score is 50 or higher or "false" if it is lower than 50
 passfail <- function(scores) {
-  passfail <- ifelse(scores >= 50, "TRUE", "FALSE")
-  print(passfail)
+  passing <- ifelse(scores >= 50, "TRUE", "FALSE")
+  print(passing)
 }
 
 #11.
