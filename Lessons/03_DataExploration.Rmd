@@ -23,7 +23,7 @@ If your working directory is not set to the folder you want, you have several op
 
 ```{r Setting the working directory }
 # Absolute file path is commented out
-setwd("/Users/hannahnelson/env872/EDE_Fall2023")
+#setwd("")
 getwd()
 ```
 
@@ -88,7 +88,8 @@ Commons functions to import datasets and store as data frames are *read.table()*
 #read.csv("/home/guest/EDE_Fall2023/Data/Raw/USGS_Site02085000_Flow_Raw.csv",stringsAsFactors = TRUE)
 
 # Relative file path (friendly for users regardless of machine)
-USGS.flow.data <- read.csv("env872//Data/Raw/USGS_Site02085000_Flow_Raw.csv",stringsAsFactors = TRUE)   
+USGS.flow.data <- read.csv(".//Data/Raw/USGS_Site02085000_Flow_Raw.csv",stringsAsFactors = TRUE)   
+#USGS.flow.data
 
 # What happens if we don't assign a name to our imported dataset?
 #read.csv("./Data/Raw/USGS_Site02085000_Flow_Raw.csv",stringsAsFactors = TRUE)
