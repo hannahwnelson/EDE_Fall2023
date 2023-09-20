@@ -35,13 +35,18 @@ This exercise accompanies the lessons in Environmental Data Analytics on Data Ex
 ```{r,  message = FALSE}
 setwd("/Users/hannahnelson/Desktop/env872/EDA-Fall2023/")
 getwd()
+
 library(tidyverse)
 library(lubridate)
 
 
-neonics <- read.csv("/Data/Raw/ECOTOX_Neonicotinoids_Insects_raw.csv", stringsAsFactors = TRUE)
-litter <- read.csv("/Data/Raw/NEON_NIWO_Litter_massdata_2018-08_raw.csv", stringsAsFactors = TRUE)
-                           
+Neonics <- read.csv("Data/Raw/ECOTOX_Neonicotinoids_Insects_raw.csv", stringsAsFactors = TRUE)
+Neonics
+View(Neonics)
+
+Litter <- read.csv("Data/Raw/NEON_NIWO_Litter_massdata_2018-08_raw.csv", stringsAsFactors = TRUE)
+Litter 
+View(Litter)
 ```
 
 ## Learn about your system
@@ -72,7 +77,7 @@ litter <- read.csv("/Data/Raw/NEON_NIWO_Litter_massdata_2018-08_raw.csv", string
 6.  Using the `summary` function on the "Effect" column, determine the most common effects that are studied. Why might these effects specifically be of interest?
 
 ```{r}
-
+summary(Neonics$Effect)
 ```
 
 > Answer:
@@ -81,6 +86,7 @@ litter <- read.csv("/Data/Raw/NEON_NIWO_Litter_massdata_2018-08_raw.csv", string
 7.  Using the `summary` function, determine the six most commonly studied species in the dataset (common name). What do these species have in common, and why might they be of interest over other insects? Feel free to do a brief internet search for more information if needed.[TIP: The `sort()` command can sort the output of the summary command...]
 
 ```{r}
+summary(Neonics$Species.Common.Name) %>% sort(decreasing=TRUE)
 
 ```
 
@@ -89,6 +95,7 @@ litter <- read.csv("/Data/Raw/NEON_NIWO_Litter_massdata_2018-08_raw.csv", string
 8.  Concentrations are always a numeric value. What is the class of `Conc.1..Author.` column in the dataset, and why is it not numeric?
 
 ```{r}
+class(Neonics$Conc.1..Author.)
 
 ```
 
@@ -99,7 +106,17 @@ litter <- read.csv("/Data/Raw/NEON_NIWO_Litter_massdata_2018-08_raw.csv", string
 9.  Using `geom_freqpoly`, generate a plot of the number of studies conducted by publication year.
 
 ```{r}
+ggplot(Neonics) +
+  geom_freqpoly(aes(x = Publication.Year, color=Title), bins=50) +
+  scale_x_continuous()
 
+
+
+ggplot(USGS.flow.data) +
+  geom_freqpoly(aes(x = gage.height.mean), bins = 50) +
+  geom_freqpoly(aes(x = gage.height.min), bins = 50, color = "darkgray") +
+  geom_freqpoly(aes(x = gage.height.max), bins = 50,  lty = 2) +
+  scale_x_continuous(limits = c(0, 10))
 ```
 
 10. Reproduce the same graph but now add a color aesthetic so that different Test.Location are displayed as different colors.

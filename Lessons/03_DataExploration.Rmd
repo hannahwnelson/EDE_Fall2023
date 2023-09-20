@@ -15,7 +15,6 @@ In this course, we will always open the R project file for the course, and addit
 
 ```{r Getting the working directory}
 # Working directory should be set to the base folder for the Environmental Data Analytics Course repository, i.e., the folder that houses the R Project file.
-
 getwd()
 ```
 
@@ -23,7 +22,7 @@ If your working directory is not set to the folder you want, you have several op
 
 ```{r Setting the working directory }
 # Absolute file path is commented out
-#setwd("")
+#setwd("/Users/hannahnelson/Desktop/env872/EDA-Fall2023/")
 getwd()
 ```
 
@@ -66,7 +65,7 @@ library(tidyverse)
 
 Question: What happens in the console when you load a package?
 
-> Answer: 
+> Answer: all packages in tidyverse are shown in console
 
 ### Import your datasets
 
@@ -92,6 +91,7 @@ USGS.flow.data <- read.csv(".//Data/Raw/USGS_Site02085000_Flow_Raw.csv",stringsA
 #USGS.flow.data
 
 # What happens if we don't assign a name to our imported dataset?
+# it is not stored
 #read.csv("./Data/Raw/USGS_Site02085000_Flow_Raw.csv",stringsAsFactors = TRUE)
 
 # Another option is to choose with your browser
@@ -141,7 +141,7 @@ summary(USGS.flow.data)  #could point to column only with $
 ```
 
 What happened to blank cells in the spreadsheet when they were imported into R?
-> Answer: 
+> Answer: NA
 
 ## Adjusting Datasets
 
@@ -193,6 +193,7 @@ help(as.Date)
 # An example is provided to get you started.
 # (code must be uncommented)
 today <- Sys.Date()
+today
 format(today, format = "%B")
 #format(today, format = "")
 #format(today, format = "")
