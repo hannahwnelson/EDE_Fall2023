@@ -4,18 +4,18 @@ author: "Environmental Data Analytics | John Fay and Luana Lima "
 output: pdf_document
 geometry: margin=2.54cm
 editor_options: 
-  chunk_output_type: console
+  chunk_output_type: inline
 ---
 
 
-```{r setup}
-knitr::opts_chunk$set(message = FALSE, warning = FALSE)
+```{r setup, message = FALSE, warning = FALSE}
 #Read packages
 library(tidyverse);library(lubridate); library(here)
 
 #Read in data, don't convert strings to factors
-sites <- read.csv(here('Data/Raw/NWIS_SiteFlowData_NE_Raw.csv'))
-dim(sites)
+sites <- read.csv(here('Data/Raw/NWIS_SiteFlowData_NE_Raw.csv')) #here() finds the desired file within the project folder
+here() #home directory (project folder)
+dim(sites) #look at dimensions of data (152x4)
 
 #Convert date column to date object
 sites$date <- ymd_hms(sites$date)
@@ -74,8 +74,9 @@ ggplot(sites,aes(x=dow)) +
 
 
 ```{r add levels to our data}
+
 #Update the levels to include all seven days of the week (note we have to start with existing levels)
-levels(sites$dow) <- c(levels(sites$dow),"1","2","6","7")
+levels(sites$dow) <- c(levels(sites$dow),"1","2","6","7") #adding sun, mon, fri, & sat to existing levels
 
 #Confirm the change
 levels(sites$dow)
@@ -83,7 +84,7 @@ levels(sites$dow)
 #Plot again
 ggplot(sites,aes(x=dow)) +
   geom_bar() + 
-  scale_x_discrete(drop=FALSE)
+  scale_x_discrete(drop=FALSE) #drop=FALSE so that levels with no values are not dropped
 
 ```
 
@@ -117,3 +118,22 @@ ggplot(sites,aes(x=dow)) +
 ```
 
 ## An exercise for you: see if you can plot the number of samples recorded each month
+```{r}
+sites$date <- factor(sites$date)
+
+sites$date <- format(date, "%m")
+
+levels(sites$date)
+
+sites$date <- factor(sites$date, levels=c("01","02","03","04","05","06","07","08","09","10","11","12"))
+
+levels(sites$date)
+
+ggplot(sites,aes(x=date)) +
+  geom_bar() + 
+  scale_x_discrete(drop=FALSE)
+
+```
+
+
+
