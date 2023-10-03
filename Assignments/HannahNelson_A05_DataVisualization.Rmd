@@ -1,6 +1,6 @@
 ---
 title: "Assignment 5: Data Visualization"
-author: "Student Name"
+author: Hannah Nelson
 date: "Fall 2023"
 output: pdf_document
 geometry: margin=2.54cm
@@ -32,8 +32,29 @@ This exercise accompanies the lessons in Environmental Data Analytics on Data Vi
 
 ```{r initialize project}
 #1 
+library(tidyverse)
+library(lubridate)
+library(here)
+library(cowplot)
+library(ggthemes)
 
 #2 
+here()
+
+Lakes <- 
+read.csv(here(
+"./Data/Processed_KEY/NTL-LTER_Lake_Chemistry_Nutrients_PeterPaul_Processed.csv"
+  ), 
+  stringsAsFactors = TRUE)
+
+glimpse(Lakes)
+
+
+Litter <- read.csv(here
+("./Data/Processed_KEY/NEON_NIWO_Litter_mass_trap_Processed.csv"), 
+  stringsAsFactors = TRUE)
+
+glimpse(Litter)
 
 ```
 ## Define your theme
@@ -46,7 +67,15 @@ This exercise accompanies the lessons in Environmental Data Analytics on Data Vi
 
 ```{r build plot theme}
 #3
+hn_theme <- theme_base() + 
+  theme(plot.background = element_rect(color= "grey", fill = "white"),
+  plot.title = element_text(color= "navy"),
+  axis.title.x = element_text(color= "navy"),
+  axis.title.y = element_text(color= "navy"),
+  legend.position = "bottom")
 
+#set default theme to my theme
+theme_set(hn_theme)
 ```
 
 ## Create graphs
@@ -56,7 +85,12 @@ For numbers 4-7, create ggplot graphs and adjust aesthetics to follow best pract
 
 ```{r plot total P vs PO4}
 #4 
-
+ggplot(Lakes, aes(x=tp_ug,
+                  y=po4, 
+                  color=lakename))+
+      geom_point()+
+      ylim(0, 50)+
+     geom_smooth(method="lm", color="black")
 ```
 
 
@@ -66,14 +100,51 @@ Tip:
 * Recall the discussion on factors in the previous section as it may be helpful here. 
 * R has a built-in variable called `month.abb` that returns a list of months;see <https://r-lang.com/month-abb-in-r-with-example>
 
-```{r Create boxplots}
+```{r Lakes Boxplot}
 #5 
+#a)
+temp <- ggplot(Lakes, aes(x=factor(month,levels=1:12, labels=month.abb), 
+                  y=temperature_C,
+                  color=lakename))+
+  geom_boxplot()+
+  scale_x_discrete(name="month", drop=FALSE)
 
+temp
+
+#b)
+TP <- ggplot(Lakes, aes(x=factor(month,levels=1:12, labels=month.abb), 
+                  y=tp_ug,
+                  color=lakename))+
+  geom_boxplot()+
+  scale_x_discrete(name="month", drop=FALSE)
+
+TP
+
+#c)
+TN <- ggplot(Lakes, aes(x=factor(month,levels=1:12, labels=month.abb), 
+                  y=tn_ug,
+                  color=lakename))+
+  geom_boxplot()+
+  scale_x_discrete(name="month", drop=FALSE)
+
+TN
+
+
+#removing legends from two plots so only one legend will be present on cowplot
+temp2 <- temp + theme(legend.position = "none")
+
+TP2 <- TP + theme(legend.position = "none")
+
+```
+
+```{r, fig.height = 7, fig.width = 6, warning = FALSE}
+#cowplot aligned vertically 
+plot_grid(temp2, TP2, TN, nrow=3, align="v")
 ```
 
 Question: What do you observe about the variables of interest over seasons and between lakes? 
 
-> Answer: 
+> Answer: Average temperature is highest in August and September for both Peter and Paul lakes with a larger range in August. The range of temperatures for both lakes is very small in November. Data for total nitrogen for Peter and Paul lakes looks similar overall with average levels and range and values for Peter Lake trending a bit higher. While phosphorus numbers are much lower than nitrogen numbers, the pattern of the data between lakes is similar to that of the nirgoen data. The highest means for ntirogen and phosphorous levels in Peter and Paul lakes are occuring in August and September.
 
 6. [Niwot Ridge] Plot a subset of the litter dataset by displaying only the "Needles" functional group. Plot the dry mass of needle litter by date and separate by NLCD class with a color aesthetic. (no need to adjust the name of each land use)
 
@@ -82,11 +153,27 @@ Question: What do you observe about the variables of interest over seasons and b
 ```{r Plot litter}
 #6
 
+#change collectDate class to date
+Litter$collectDate <- ymd(Litter$collectDate)
+
+
+Needles <- Litter %>% 
+  filter(functionalGroup == "Needles")
+
+ggplot(Needles, aes(x=collectDate,
+                    y=dryMass,
+                   color=nlcdClass))+
+      geom_point()
+
 
 #7
-
+ggplot(Needles, aes(x=collectDate,
+                    y=dryMass,
+                   color=nlcdClass))+
+      geom_point()+
+      facet_wrap(vars(nlcdClass))
 
 ```
 Question: Which of these plots (6 vs. 7) do you think is more effective, and why? 
 
-> Answer:
+> Answer: Plot 7 is more effective because it allows you to more effectively visually compare all three classes. In plot 6, many of the data points are on top of each other or very close to each other, and that makes it hard to see all of the data points. Plot 7 shows the data points more clearly, and it is easy to compare the classes when they are side by side.
