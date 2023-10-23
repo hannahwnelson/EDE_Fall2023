@@ -4,7 +4,7 @@ author: "Environmental Data Analytics | John Fay and Luana Lima "
 output: pdf_document
 geometry: margin=2.54cm
 editor_options: 
-  chunk_output_type: console
+  chunk_output_type: inline
 toc: true
 ---
 

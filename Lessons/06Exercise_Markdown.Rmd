@@ -4,7 +4,7 @@ author: "Environmental Data Analytics | John Fay and Luana Lima "
 output: pdf_document
 geometry: margin=2.54cm
 editor_options: 
-  chunk_output_type: console
+  chunk_output_type: inline
 ---
 
 ## Set up the coding environment
@@ -44,3 +44,9 @@ nutrient_data_tn <- nutrient_data %>%
 ```
 
 ## Report the summary
+```{r}
+knitr::kable(nutrient_data_tn,caption = "Summary of Total Nitrogen")
+
+knitr::kable(nutrient_data_tn,caption = "Another summary of Total Nitrogen")
+```
+
