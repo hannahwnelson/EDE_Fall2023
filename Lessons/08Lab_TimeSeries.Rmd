@@ -5,7 +5,7 @@ date: "Fall 2023"
 output: pdf_document
 geometry: margin=2.54cm
 editor_options: 
-  chunk_output_type: console
+  chunk_output_type: inline
 ---
 
 ## Objectives
@@ -84,12 +84,25 @@ BR_complete <- inner_join(Rainfall_BR_processed,Temp_BR_processed)
 
 #Exercise 5: Check if there is any missing data for both temperature and rainfall series.
 
+library(naniar)
 
-
+vis_miss(Rainfall_BR_processed)
+vis_miss(Temp_BR_processed)
 
 #Exercise 6: Plot both series over time on separate plots. Add a trend line using geom_smooth(). Can you say something about the trend just by visualizing the data?
 
 
+ggplot(Rainfall_BR_processed, aes(x = Date, y = Rainfall)) +
+  geom_line()+
+  geom_smooth(method ='lm')
+
+ggplot(Temp_BR_processed, aes(x = Date, y = Temperature_C)) +
+  geom_line()+
+  geom_smooth(method ='lm')
+
+
+  
+  
 
 
 
@@ -100,6 +113,11 @@ BR_complete <- inner_join(Rainfall_BR_processed,Temp_BR_processed)
 
 ```{r}
 #Exercise 7: Create a time series objects for each series using ts(). Make sure you specify the starting point and frequency.
+
+rain.ts <- ts(data = BR_complete$Rainfall, frequency = 12, start = c(1901,1))
+
+
+temp.ts <- ts(data = BR_complete$Temperature_C, frequency = 12, start = c(1901,1))
 
 
 
@@ -123,9 +141,11 @@ The `stl` function decomposes the time series object into its component parts. W
 # Exercise 8: Use the stl() function to decompose both series. 
 # Visualize the decomposed series using plot(). What components can you identify?
 
+temp.ts.decomp <- stl(temp.ts, s.window = "periodic")
+plot(temp.ts.decomp)
 
-
-
+rain.ts.decomp <- stl(rain.ts, s.window = "periodic")
+plot(rain.ts.decomp)
 
 
 # Exercise 9: Use the times series object generated with the stl() to extract the 
