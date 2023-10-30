@@ -5,7 +5,7 @@ date: "Fall 2023"
 output: pdf_document
 geometry: margin=2.54cm
 editor_options: 
-  chunk_output_type: console
+  chunk_output_type: inline
 ---
 
 ## Objectives
@@ -24,6 +24,8 @@ here()
 EPAair <- read.csv(here("Data/Processed_KEY/EPAair_O3_PM25_NC1819_Processed.csv"), stringsAsFactors = TRUE)
 # Set date to date format
 EPAair$Date <- as.Date(EPAair$Date, format = "%Y-%m-%d")
+
+EPAair
 
 Litter <- read.csv(here("Data/Processed_KEY/NEON_NIWO_Litter_mass_trap_Processed.csv"), stringsAsFactors = TRUE)
 # Set date to date format
@@ -48,7 +50,36 @@ Create three plots, each with appropriately formatted axes and legends. Choose a
 
 ```{r}
 #Exercise 1:
+  
+ggplot(EPAair, aes(x = Ozone, fill = as.factor(Year)))+
+  geom_density(alpha = 0.5 )+
+  scale_fill_manual(values=c("cyan4", "darkorchid"))+
+  labs(x = "Ozone AQI value",
+       y = "Density",
+       fill = "Year")
 
+
+ggplot(EPAair, aes(x=as.factor(Year), y=Ozone)) +
+  geom_boxplot() +
+  stat_summary(geom = "text", 
+               fun=max,
+               vjust=-1,
+               size=4,
+               label=c("b", "a")) +
+  labs(y="Ozone AQI value", x="") +
+  ylim(0,150)
+
+
+
+ggplot(EPAair, aes(x=as.factor(Year), y=Ozone)) +
+  geom_violin(draw_quantiles = .05) +
+  stat_summary(geom = "text", 
+               fun=max,
+               vjust=-1,
+               size=4,
+               label=c("b", "a")) +
+  labs(y="Ozone AQI value", x="") +
+  ylim(0,150)
 
 ```
 
@@ -62,11 +93,15 @@ For the NTL-LTER dataset, can we predict PM2.5 from Ozone?
 
 #Exercise 2: Run a linear regression PM2.5 by Ozone. Find the p-value and R-squared value. 
 
+EPAairlm <- lm(data = EPAair, PM2.5 ~ Ozone)
 
+summary(EPAairlm)
 
 #Exercise 3: Build a scatterplot. Add a line and standard error for the linear regression. Add the regression equation to the plot
 
-
+ggplot(EPAair, aes(x=Ozone, y=PM2.5))+
+  geom_point()+
+  geom_smooth(method='lm', se=T)
 
 ```
 
