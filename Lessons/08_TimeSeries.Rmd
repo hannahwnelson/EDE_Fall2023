@@ -115,6 +115,7 @@ We first need to turn the discharge data into a time series object in R. This is
 Note: time series objects must be equispaced. In our case, we have daily data with no NAs in the data frame, so we don't need to worry about this. We will cover how to address data that are not equispaced later in the lesson.
 
 ```{r}
+EnoDischarge.late
 EnoDischarge.late_ts <- ts(EnoDischarge.late$discharge.mean, start = c(1985,1), frequency = 365)
 ```
 
@@ -130,6 +131,8 @@ plot(EnoDischarge.late_Decomposed)
 
 # We can extract the components and turn them into data frames
 EnoDischarge.late_Components <- as.data.frame(EnoDischarge.late_Decomposed$time.series[,1:3])
+
+EnoDischarge.late_Components 
 
 EnoDischarge.late_Components <- mutate(EnoDischarge.late_Components,
         Observed = EnoDischarge.late$discharge.mean,     
@@ -185,6 +188,9 @@ summary(wind_data$AWND)
 wind_data_clean <- 
   wind_data %>% 
   mutate( AWND.clean = zoo::na.approx(AWND) )
+
+
+
 
 summary(wind_data_clean$AWND.clean)
 #Note the NA is gone
