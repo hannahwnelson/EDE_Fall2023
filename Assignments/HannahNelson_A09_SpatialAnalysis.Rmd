@@ -213,7 +213,8 @@ Now we can examine where the flooding appears most acute by visualizing gage hei
 ggplot() +
   geom_sf(data = ne_sf, fill = "seagreen") +
   geom_sf(data = usgs_siteflow_sf, aes(color = gage_ht)) +
-  theme_minimal() 
+  theme_minimal() +
+  labs(title = "Gage Height at Sites in Nebraska")
 
 ```
 
@@ -240,7 +241,9 @@ usgs_siteflow_sf_utm <- st_transform(usgs_siteflow_sf, crs = 32614)
 ggplot() +
   geom_sf(data = ne_sf_utm, fill = "seagreen") +
   geom_sf(data = usgs_siteflow_sf_utm, color = "navy") +
-  theme_minimal()
+  theme_minimal() +
+  labs(title = "NWIS Gage Locations in Nebraska",
+       subtitle = "UTM Zone 14")
 
 ```
 
@@ -259,25 +262,26 @@ Now let's zoom into a particular county and examine the gages located there.
 ```{r spatial selection}
 #22 Select the county
 
-dawson <- ne_sf %>%
-  filter(COUNTYFP == 047)
+dawsonco <- ne_sf_utm %>%
+  filter(COUNTYFP == "047")
 
-dawson
-
-mapview(data = dawson)
+dawsonco
 
 #23 Spatially select gages within the selected county
 
-ggplot() +
-  geom_sf(data = ne_sf_utm, fill = "seagreen") +
-  geom_sf(data = ne_sf %>%
-            filter(ne_sf$COUNTYFP == 047), fill = "orchid") +
-  geom_sf(data = usgs_siteflow_sf, color = "navy") +
-  theme_minimal()
+dawsonco_sites <- dawsonco %>%
+  st_intersection(usgs_siteflow_sf_utm)
 
+intersect
 
 #24 Plot
 
-
-
+ggplot() +
+  geom_sf(data = ne_sf_utm, fill = "seagreen") +
+  geom_sf(data = dawsonco, fill = "darkorchid") +
+  geom_sf(data = dawsonco_sites, color = "navy") +
+  theme_minimal() +
+  labs(title = "NWIS Gage Locations in Dawson County Nebraska",
+       subtitle = "UTM Zone 14")
+  
 ```
